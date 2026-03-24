@@ -1,6 +1,6 @@
-tensorflow
+tensorflow==2.15.1
 scikit-learn
-numpy
+numpy<2.0
 matplotlib
 seaborn
 pandas
