@@ -14,12 +14,10 @@ env/
 .idea/
 
 # ========================
-# Dataset & Large Files
+# Dataset (STILL IGNORED - TOO BIG)
 # ========================
 Plant_Disease_Prediction/Plant_Disease_Dataset/
 Plant_Disease_Prediction/Plant_Disease_Dataset.zip
-Plant_Disease_Prediction/trained_model.h5
-Plant_Disease_Prediction/trained_model.keras
 
 # ========================
 # Python Cache
@@ -46,3 +44,6 @@ desktop.ini
 *.log
 *.tmp
 *.bak
+
+# Note: trained_model.h5, trained_model.keras, and class_labels.pkl 
+# are now TRACKED so Streamlit Cloud can find them.

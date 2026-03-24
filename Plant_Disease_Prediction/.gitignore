@@ -4,12 +4,8 @@
 Plant_Disease_Dataset/
 Plant_Disease_Dataset.zip
 
-# ========================
-# Trained Models (large binary files)
-# ========================
-*.h5
-*.keras
-*.pkl
+# Note: Model files (*.h5, *.keras, *.pkl) are NO LONGER ignored 
+# because they are needed for Streamlit Cloud deployment.
 
 # ========================
 # Python Cache & Bytecode
@@ -47,14 +43,6 @@ env/
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# ========================
-# Distribution / Packaging
-# ========================
-dist/
-build/
-*.egg-info/
-*.egg
 
 # ========================
 # Logs & Temp Files
