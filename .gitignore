@@ -1,0 +1,48 @@
+# ========================
+# Virtual Environments
+# ========================
+venv/
+.venv/
+cleanenv/
+env/
+.env
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+
+# ========================
+# Dataset & Large Files
+# ========================
+Plant_Disease_Prediction/Plant_Disease_Dataset/
+Plant_Disease_Prediction/Plant_Disease_Dataset.zip
+Plant_Disease_Prediction/trained_model.h5
+Plant_Disease_Prediction/trained_model.keras
+
+# ========================
+# Python Cache
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+
+# ========================
+# Jupyter Checkpoints
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# OS Files
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# Logs & Temp
+# ========================
+*.log
+*.tmp
+*.bak

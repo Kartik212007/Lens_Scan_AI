@@ -1,0 +1,64 @@
+# ========================
+# Dataset & Large Files
+# ========================
+Plant_Disease_Dataset/
+Plant_Disease_Dataset.zip
+
+# ========================
+# Trained Models (large binary files)
+# ========================
+*.h5
+*.keras
+*.pkl
+
+# ========================
+# Python Cache & Bytecode
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# ========================
+# Virtual Environment
+# ========================
+venv/
+env/
+.env
+.venv/
+
+# ========================
+# Jupyter Notebook Checkpoints
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# IDE / Editor Settings
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================
+# OS Generated Files
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# Distribution / Packaging
+# ========================
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ========================
+# Logs & Temp Files
+# ========================
+*.log
+*.tmp
+*.bak
