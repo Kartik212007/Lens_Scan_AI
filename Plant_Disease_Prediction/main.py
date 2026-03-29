@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 import os
 import pickle
+import json
 from PIL import Image
 
 # =========================
@@ -15,6 +16,18 @@ st.set_page_config(
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# =========================
+# Load Training History (BUG-08 FIX: dynamic accuracy instead of hardcoded 97%)
+# =========================
+_hist_path = os.path.join(BASE_DIR, "training_hist.json")
+if os.path.exists(_hist_path):
+    with open(_hist_path) as _f:
+        _hist_data = json.load(_f)
+    _val_acc = max(_hist_data.get("val_accuracy", [0.97])) * 100
+else:
+    _val_acc = 97.0
+VAL_ACC_DISPLAY = f"{_val_acc:.0f}%"
 
 # =========================
 # Premium CSS
@@ -550,7 +563,8 @@ def load_model():
         try:
             model = tf.keras.Sequential([
                 # Block 1 – 32 filters
-                tf.keras.layers.Conv2D(32, (3,3), activation='relu', padding='same', input_shape=(64, 64, 3)),
+                # FIX: input_shape changed from (64,64,3) → (128,128,3) to match train_model.py IMG_SIZE=128
+                tf.keras.layers.Conv2D(32, (3,3), activation='relu', padding='same', input_shape=(128, 128, 3)),
                 tf.keras.layers.Conv2D(32, (3,3), activation='relu', padding='same'),
                 tf.keras.layers.MaxPooling2D(2, 2),
 
@@ -655,8 +669,10 @@ DISEASE_INFO = {
     "mosaic_virus":        ("🍅", "Viral",     "No cure; control aphids, remove plants"),
 }
 
-def format_label(label: str) -> tuple[str, str]:
-    """Returns (plant_name, condition)."""
+def format_label(label) -> tuple[str, str]:
+    """Returns (plant_name, condition). BUG-04 FIX: handles None gracefully."""
+    if not label:  # guard against None entries in class_labels list
+        return "Unknown", "Unknown"
     parts = label.split("___")
     plant = parts[0].replace("_", " ").replace(",", ",")
     cond  = parts[1].replace("_", " ") if len(parts) > 1 else "Unknown"
@@ -677,7 +693,7 @@ def predict_image(image_file):
     try:
         img = Image.open(image_file).convert("RGB")
         img = img.resize((IMG_WIDTH, IMG_HEIGHT))
-        img_array = np.array(img, dtype=np.float32)
+        img_array = np.array(img, dtype=np.float32) / 255.0  # FIX: normalize to [0,1] — model trained with rescale=1./255
         img_array = np.expand_dims(img_array, axis=0)
 
         predictions = model.predict(img_array, verbose=0)[0]
@@ -695,7 +711,7 @@ def predict_image(image_file):
 # =========================
 # ── HERO HEADER ──
 # =========================
-st.markdown("""
+st.markdown(f"""
 <div class="hero-header">
   <div class="hero-badge">AI-Powered Plant Diagnostics</div>
   <h1 class="hero-title">LeafScan AI</h1>
@@ -710,8 +726,8 @@ st.markdown("""
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
-      <span class="stat-value">97%</span>
-      <span class="stat-label">Train Accuracy</span>
+      <span class="stat-value">{VAL_ACC_DISPLAY}</span>
+      <span class="stat-label">Val Accuracy</span>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
@@ -803,6 +819,7 @@ with right_col:
 
         # ── Run prediction ──
         if predict_btn:
+            uploaded_file.seek(0)  # BUG-03 FIX: reset stream — Image.open() already advanced the pointer
             with st.spinner("Running diagnostic model…"):
                 results = predict_image(uploaded_file)
 

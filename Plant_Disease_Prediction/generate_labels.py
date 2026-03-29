@@ -9,8 +9,11 @@ if not os.path.isdir(train_dir):
     raise FileNotFoundError(f"Train directory not found: {train_dir}")
 
 # Use sorted order to be consistent with ImageDataGenerator (alphabetical)
-# Filter out .DS_Store and any other hidden files
-classes = sorted([d for d in os.listdir(train_dir) if not d.startswith('.')])
+# BUG-06 FIX: filter to directories only, not just hidden files
+classes = sorted([
+    d for d in os.listdir(train_dir)
+    if os.path.isdir(os.path.join(train_dir, d)) and not d.startswith('.')
+])
 class_indices = {cls: idx for idx, cls in enumerate(classes)}
 
 print(f"Found {len(classes)} classes:")

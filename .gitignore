@@ -3,7 +3,6 @@
 # ========================
 venv/
 .venv/
-cleanenv/
 env/
 .env
 
